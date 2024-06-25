@@ -1,18 +1,19 @@
 const express = require("express");
 const app = express();
 
-app.get('/user/:id', (req, res) => {
-    const userId = req.params.id;
-    res.send(`user ID: ${userId}`);
+app.use((req, res, next) => {
+    console.log(`${new Date().toLocaleString()}: ${req.method} ${req.url}`);
+    next();
 });
 
 app.use((req, res, next) => {
-    res.status(404).send('404 not found');
+    res.setHeader('X-Custom-Header', 'Value');
+    next();
 });
 
-app.use((err, res, req, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+app.get('/user/:id', (req, res) => {
+    const userId = req.params.id;
+    res.send(`user ID: ${userId}`);
 });
 
 const PORT = process.env.PORT || 3000;
