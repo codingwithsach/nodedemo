@@ -1,8 +1,10 @@
-const express = require("express")
-const path = require('path')
+const express = require("express");
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.get('/user/:id', (req, res) => {
+    const userId = req.params.id;
+    res.send(`user ID: ${userId}`);
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
